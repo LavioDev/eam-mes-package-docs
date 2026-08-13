@@ -33,9 +33,7 @@ const toggleSubmenu = (section: 'eam' | 'schema') => {
                   <li class="submenu-item">
                       <RouterLink to="/deployment" class="submenu-link" :class="{ active: route.path === '/deployment' }">Quy trình triển khai</RouterLink>
                   </li>
-                  <li class="submenu-item">
-                      <RouterLink to="/apis" class="submenu-link" :class="{ active: route.path === '/apis' }">Danh sách APIs</RouterLink>
-                  </li>
+
               </ul>
           </div>
       </div>

@@ -179,11 +179,23 @@ Accept: application/json
       </div>
 
       <h2>Bảo mật &amp; Xử lý rủi ro</h2>
-      <ul>
-          <li><strong>Race Condition:</strong> Sử dụng <code>MigrationFileChecker</code> để kiểm tra trùng lặp cả trên file và cấu trúc DB thực tế trước khi tạo record và dispatch job.</li>
-          <li><strong>Lỗi Migration:</strong> Trạng thái <code>failed</code> được ghi vào bảng <code>eamo_extension_requests</code> kèm <code>error_message</code> chi tiết để dễ dàng kiểm tra và xử lý thủ công.</li>
-          <li><strong>Bảo vệ API:</strong> Bắt buộc tích hợp Middleware xác thực (<code>auth:sanctum</code> hoặc middleware phân quyền admin) bằng cách cấu hình thuộc tính <code>api_middleware</code> trong file <code>config/eam.php</code>.</li>
-          <li><strong>Audit Trail:</strong> Mọi yêu cầu đều được ghi lại đầy đủ trong bảng <code>eamo_extension_requests</code> bao gồm IP/User ID (<code>requested_by</code>) và toàn bộ vòng đời trạng thái xử lý.</li>
-      </ul>
+      <div class="grid-cards" style="margin-top: 16px;">
+          <div class="card-item">
+              <div class="card-title">Race Condition</div>
+              <p>Sử dụng <code>MigrationFileChecker</code> để kiểm tra trùng lặp cả trên file và cấu trúc DB thực tế trước khi tạo record và dispatch job.</p>
+          </div>
+          <div class="card-item">
+              <div class="card-title">Lỗi Migration</div>
+              <p>Trạng thái <code>failed</code> được ghi vào bảng <code>eamo_extension_requests</code> kèm <code>error_message</code> chi tiết để dễ dàng kiểm tra và xử lý thủ công.</p>
+          </div>
+          <div class="card-item">
+              <div class="card-title">Bảo vệ API</div>
+              <p>Bắt buộc tích hợp Middleware xác thực (<code>auth:sanctum</code> hoặc middleware phân quyền admin) bằng cách cấu hình thuộc tính <code>api_middleware</code> trong file <code>config/eam.php</code>.</p>
+          </div>
+          <div class="card-item">
+              <div class="card-title">Audit Trail</div>
+              <p>Mọi yêu cầu đều được ghi lại đầy đủ trong bảng <code>eamo_extension_requests</code> bao gồm IP/User ID (<code>requested_by</code>) và toàn bộ vòng đời trạng thái xử lý.</p>
+          </div>
+      </div>
   </section>
 </template>

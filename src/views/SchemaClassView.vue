@@ -17,10 +17,25 @@ const copySnippetInternal = (id: string) => {
       <p>Cơ chế này giải quyết bài toán: <strong>Tùy biến thêm trường dữ liệu động cho các bảng dữ liệu lõi của package mà không cần sửa trực tiếp mã nguồn lõi</strong>. Nhà phát triển chỉ cần khai báo mô tả cấu trúc trường thông qua một Class PHP.</p>
 
       <h2>Nguyên lý hoạt động</h2>
-      <ul>
-          <li>Mọi thay đổi cấu trúc DB đều phải thực thi qua file **Migration**. Hệ thống **không bao giờ thực thi ALTER TABLE trực tiếp** trên DB để tránh race conditions và mất audit trail.</li>
-          <li>Sử dụng Class mô tả dạng Value Object (định hình bằng class <code>ColumnDefinition</code>) giúp hệ thống tự động suy diễn cấu trúc để sinh cả phương thức <code>up()</code> (thêm cột) và <code>down()</code> (xóa cột khi rollback) hoàn toàn tự động.</li>
-      </ul>
+      <div class="alert alert-important" style="margin-top: 16px;">
+          <div class="alert-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              Không thay đổi trực tiếp DB
+          </div>
+          <div class="alert-content">
+              Mọi thay đổi cấu trúc DB đều phải thực thi qua file <strong>Migration</strong>. Hệ thống <strong>không bao giờ thực thi ALTER TABLE trực tiếp</strong> trên database để tránh race conditions và mất vết kiểm toán (audit trail).
+          </div>
+      </div>
+
+      <div class="alert alert-note">
+          <div class="alert-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              Value Object Column Definition
+          </div>
+          <div class="alert-content">
+              Sử dụng Class mô tả dạng Value Object (định hình bằng class <code>ColumnDefinition</code>) giúp hệ thống tự động suy diễn cấu trúc để sinh cả phương thức <code>up()</code> (thêm cột) và <code>down()</code> (xóa cột khi rollback) hoàn toàn tự động.
+          </div>
+      </div>
 
       <h2>Hướng dẫn chi tiết các bước triển khai</h2>
       

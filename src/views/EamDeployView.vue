@@ -16,6 +16,16 @@ const copySnippetInternal = (id: string) => {
       <h1>Quy trình Triển khai Package</h1>
       <p>Hướng dẫn chi tiết quy trình chèn thư viện vào hệ thống Laravel và publish tài nguyên tương ứng:</p>
 
+      <div class="alert alert-note" style="margin-top: 16px;">
+          <div class="alert-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              Yêu cầu môi trường
+          </div>
+          <div class="alert-content">
+              Đảm bảo dự án của bạn sử dụng <strong>Laravel 13</strong> và <strong>PHP 8.4</strong>. Gói Laravel Package này yêu cầu định dạng UUID cho khoá chính (Primary Key) trong toàn bộ cơ sở dữ liệu.
+          </div>
+      </div>
+
       <div class="step-timeline" style="margin-top: 24px;">
           <!-- Step 1 -->
           <div class="step-item">
@@ -149,6 +159,16 @@ const copySnippetInternal = (id: string) => {
                       <div class="code-content" id="code-migrate"><span class="kw">php artisan</span> <span class="str">migrate</span></div>
                   </div>
               </div>
+          </div>
+      </div>
+
+      <div class="alert alert-warning" style="margin-top: 24px;">
+          <div class="alert-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              Cảnh báo khi chạy migrations
+          </div>
+          <div class="alert-content">
+              Đảm bảo đã sao lưu cơ sở dữ liệu trước khi chạy lệnh <code>php artisan migrate</code> trên môi trường production.
           </div>
       </div>
   </section>
