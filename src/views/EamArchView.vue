@@ -112,8 +112,9 @@ backend/
 
       <h3 style="margin-top: 24px;">Chi tiết Thành phần Lõi (`app/`)</h3>
       <ul>
-        <li><strong>Bridge:</strong> Tùy biến hành vi mặc định của thư viện thứ 3. Điển hình là <code>AccessToken.php</code> &amp; <code>AccessTokenRepository.php</code> giúp override luồng phát hành JWT của Laravel Passport để nhúng thêm claim <code>roles</code> vào JWT Payload.</li>
+        <li><strong>Bridge:</strong> Tùy biến hành vi mặc định của thư viện thứ 3. Điển hình là <code>AccessToken.php</code> &amp; <code>AccessTokenRepository.php</code> (đăng ký qua <code>Passport::useAccessTokenEntity</code>) giúp override luồng phát hành JWT của Laravel Passport để nhúng thêm custom claims <code>roles</code> và <code>role</code> vào JWT Payload.</li>
         <li><strong>Builders:</strong> Tách biệt truy vấn Eloquent phức tạp ra khỏi Model/Controller. Ví dụ: <code>UserQueryBuilder.php</code> chứa truy vấn cho thực thể User.</li>
+        <li><strong>Concerns &amp; Models:</strong> Tận dụng tối đa các tính năng sẵn có của Laravel 13 Eloquent (Route Model Binding mặc định theo Primary Key UUID, Attribute Casting, chuẩn hóa boolean trong FormRequest) mà không phát minh lại bánh xe qua các Trait dư thừa.</li>
         <li><strong>Http (Giao tiếp HTTP &amp; Routing):</strong>
           <ul>
             <li><strong>Controllers:</strong> Áp dụng mô hình Single Action Controller (Invokable Controller) hoặc gói <code>lorisleiva/laravel-actions</code> giúp mỗi file chỉ xử lý duy nhất 1 hành động độc lập.</li>
