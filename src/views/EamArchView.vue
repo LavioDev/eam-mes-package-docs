@@ -59,6 +59,13 @@ watch([activeTab, activeSubmodule], () => {
         </svg>
         Tổng quan ứng dụng
       </button>
+      <button class="tab-btn" :class="{ active: activeTab === 'module-engine' }" @click="activeTab = 'module-engine'">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="16 18 22 12 16 6"></polyline>
+          <polyline points="8 6 2 12 8 18"></polyline>
+        </svg>
+        Module Engine &amp; Generator CLI
+      </button>
       <button class="tab-btn" :class="{ active: activeTab === 'submodules' }" @click="activeTab = 'submodules'">
         <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
@@ -146,6 +153,78 @@ backend/
         <div class="card-item" style="grid-column: span 2;">
           <div class="card-title">5. Response API Đồng nhất</div>
           <p>Toàn bộ API trả về response đồng nhất theo chuẩn: <code>{ "status": "success", "data": ... }</code> hoặc <code>{ "message": "...", "data": ... }</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. TAB MODULE ENGINE & GENERATOR CLI -->
+    <div v-else-if="activeTab === 'module-engine'" class="tab-pane-content">
+      <h2>Module Engine, Auto-Discovery &amp; Generator CLI</h2>
+      <p>Phân hệ Module Engine được thiết kế giúp package <code>eam-mes-package</code> hoạt động hoàn toàn độc lập, hỗ trợ <strong>Tự động phát hiện (Auto-Discovery)</strong> và cung cấp lệnh <strong>Generator CLI</strong> tạo module mới chỉ với 1 câu lệnh.</p>
+
+      <h3 style="margin-top: 24px;">1. Kiến trúc Độc lập &amp; Auto-Discovery</h3>
+      <ul>
+        <li><strong><code>AbstractModuleProvider</code> (Template Method Pattern):</strong> Mọi submodule trong package (như <code>Equipment/Checklist</code>, <code>Equipment/Maintenance</code>) kế thừa lớp cơ sở này. Lớp tự động nạp <code>routes.php</code> và tự quản lý danh sách file migration trong phương thức <code>getMigrations()</code> mà không cần phụ thuộc vào Host App.</li>
+        <li><strong><code>ModuleRegistry</code> (Registry Pattern):</strong> Tự động quét thư mục <code>src/Modules/*/*</code> để đăng ký các module hoạt động. Hỗ trợ bật/tắt module linh hoạt qua cấu hình <code>config('eam.modules')</code>.</li>
+      </ul>
+
+      <div class="code-container" style="margin-top: 16px;">
+        <div class="code-header">
+          <span>Khai báo Module Provider (`Register.php`)</span>
+          <button class="btn-copy" @click="handleCopy('code-abstract-provider')">Copy</button>
+        </div>
+        <pre class="code-content" id="code-abstract-provider" style="color: #a1a1aa; line-height: 1.7; font-family: var(--font-mono); font-size: 13px;">
+<span style="color: #f472b6;">namespace</span> Modules\Equipment\Checklist;
+
+<span style="color: #f472b6;">use</span> Spatie\LaravelPackageTools\Modules\AbstractModuleProvider;
+
+<span style="color: #38bdf8;">final class</span> <span style="color: #facc15;">Register</span> <span style="color: #38bdf8;">extends</span> <span style="color: #facc15;">AbstractModuleProvider</span>
+{
+    <span style="color: #38bdf8;">public function</span> <span style="color: #60a5fa;">getDomain</span>(): <span style="color: #38bdf8;">string</span> { <span style="color: #f472b6;">return</span> <span style="color: #4ade80;">'Equipment'</span>; }
+    <span style="color: #38bdf8;">public function</span> <span style="color: #60a5fa;">getName</span>(): <span style="color: #38bdf8;">string</span> { <span style="color: #f472b6;">return</span> <span style="color: #4ade80;">'Checklist'</span>; }
+
+    <span style="color: #38bdf8;">public function</span> <span style="color: #60a5fa;">getMigrations</span>(): <span style="color: #38bdf8;">array</span>
+    {
+        <span style="color: #f472b6;">return</span> [
+            <span style="color: #4ade80;">'2025_08_05_113908_eamo_create_checklist_sessions_table.php'</span>,
+            <span style="color: #4ade80;">'2025_08_05_113910_eamo_create_checklist_details_table.php'</span>,
+        ];
+    }
+}</pre>
+      </div>
+
+      <h3 style="margin-top: 24px;">2. Generator CLI (`php artisan eam:make-module`)</h3>
+      <p>Cho phép lập trình viên tạo nhanh bộ khung module chuẩn (Scaffolding) bao gồm Register Provider, routes.php, Eloquent Model, Migration, Form Requests, Services và CRUD Actions.</p>
+
+      <div class="code-container" style="margin-top: 16px;">
+        <div class="code-header">
+          <span>Lệnh Generator CLI trong Terminal</span>
+          <button class="btn-copy" @click="handleCopy('code-cli-gen')">Copy</button>
+        </div>
+        <pre class="code-content" id="code-cli-gen" style="color: #a1a1aa; line-height: 1.7; font-family: var(--font-mono); font-size: 13px;">
+<span style="color: #60a5fa;"># 1. Sinh khung module cơ bản</span>
+php artisan eam:make-module Equipment Tooling
+
+<span style="color: #60a5fa;"># 2. Sinh khung module hoàn chỉnh kèm CRUD Actions, Requests và Service</span>
+php artisan eam:make-module Equipment Tooling --model=ToolingMold --crud
+
+<span style="color: #60a5fa;"># 3. Xuất bản code và migration của module mới sang Host App</span>
+php artisan eam-mes:publish --submodule=tooling</pre>
+      </div>
+
+      <h3 style="margin-top: 24px;">3. Cấu trúc Scaffolding Tự Động Sinh</h3>
+      <div class="grid-cards">
+        <div class="card-item">
+          <div class="card-title">Register.php &amp; routes.php</div>
+          <p>Tự động kế thừa <code>AbstractModuleProvider</code> và định nghĩa các endpoints RESTful API chuẩn có versioning và middleware auth.</p>
+        </div>
+        <div class="card-item">
+          <div class="card-title">Eloquent Model &amp; Migration</div>
+          <p>Tự động cấu hình <code>HasUuids</code>, mảng <code>$fillable</code>, <code>casts()</code> và file migration có tiền tố chuẩn <code>eamo_</code>.</p>
+        </div>
+        <div class="card-item" style="grid-column: span 2;">
+          <div class="card-title">Actions &amp; Service Layer (--crud)</div>
+          <p>Sinh sẵn bộ 5 Single-Action Classes (<code>Index</code>, <code>Store</code>, <code>Show</code>, <code>Update</code>, <code>Delete</code>) áp dụng <code>Lorisleiva\Actions\Concerns\AsAction</code> kèm <code>Service</code> layer độc lập.</p>
         </div>
       </div>
     </div>
