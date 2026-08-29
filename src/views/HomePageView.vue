@@ -43,7 +43,7 @@ const copyText = (text: string, flagRef: { value: boolean }) => {
 
         <!-- CTA row -->
         <div class="cta-row">
-          <RouterLink to="/overview" class="btn-primary">
+          <RouterLink to="/docs/overview" class="btn-primary">
             {{ t('landing.hero.btnDocs') }}
             <svg viewBox="0 0 20 20" fill="currentColor" class="btn-arrow"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"/></svg>
           </RouterLink>
@@ -168,7 +168,7 @@ const copyText = (text: string, flagRef: { value: boolean }) => {
                 {{ t('landing.featured.btnGithub') }}
                 <svg viewBox="0 0 20 20" fill="currentColor" class="link-arrow"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"/></svg>
               </a>
-              <RouterLink to="/overview" class="card-link card-link-docs">
+              <RouterLink to="/docs/overview" class="card-link card-link-docs">
                 {{ t('landing.featured.btnDocs') }}
                 <svg viewBox="0 0 20 20" fill="currentColor" class="link-arrow"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"/></svg>
               </RouterLink>
@@ -299,21 +299,21 @@ const copyText = (text: string, flagRef: { value: boolean }) => {
           <div class="footer-col">
             <h5 class="footer-heading">{{ t('landing.footer.colPackage') }}</h5>
             <ul class="footer-links">
-              <li><RouterLink to="/overview">{{ t('landing.footer.linkOverview') }}</RouterLink></li>
-              <li><RouterLink to="/database">{{ t('landing.footer.linkDatabase') }}</RouterLink></li>
-              <li><RouterLink to="/module-engine">{{ t('landing.footer.linkEngine') }}</RouterLink></li>
-              <li><RouterLink to="/apis">{{ t('landing.footer.linkApis') }}</RouterLink></li>
-              <li><RouterLink to="/deployment">{{ t('landing.footer.linkDeploy') }}</RouterLink></li>
+              <li><RouterLink to="/docs/overview">{{ t('landing.footer.linkOverview') }}</RouterLink></li>
+              <li><RouterLink to="/docs/database">{{ t('landing.footer.linkDatabase') }}</RouterLink></li>
+              <li><RouterLink to="/docs/module-engine">{{ t('landing.footer.linkEngine') }}</RouterLink></li>
+              <li><RouterLink to="/docs/apis">{{ t('landing.footer.linkApis') }}</RouterLink></li>
+              <li><RouterLink to="/docs/deployment">{{ t('landing.footer.linkDeploy') }}</RouterLink></li>
             </ul>
           </div>
 
           <div class="footer-col">
             <h5 class="footer-heading">{{ t('landing.footer.colSchema') }}</h5>
             <ul class="footer-links">
-              <li><RouterLink to="/schema/class">{{ t('landing.footer.linkSchemaClass') }}</RouterLink></li>
-              <li><RouterLink to="/schema/api">{{ t('landing.footer.linkSchemaApi') }}</RouterLink></li>
-              <li><RouterLink to="/schema/generator">{{ t('landing.footer.linkSchemaGen') }}</RouterLink></li>
-              <li><RouterLink to="/schema/api-generator">{{ t('landing.footer.linkSchemaApiGen') }}</RouterLink></li>
+              <li><RouterLink to="/docs/schema/class">{{ t('landing.footer.linkSchemaClass') }}</RouterLink></li>
+              <li><RouterLink to="/docs/schema/api">{{ t('landing.footer.linkSchemaApi') }}</RouterLink></li>
+              <li><RouterLink to="/docs/schema/generator">{{ t('landing.footer.linkSchemaGen') }}</RouterLink></li>
+              <li><RouterLink to="/docs/schema/api-generator">{{ t('landing.footer.linkSchemaApiGen') }}</RouterLink></li>
             </ul>
           </div>
 
@@ -334,7 +334,7 @@ const copyText = (text: string, flagRef: { value: boolean }) => {
             {{ t('landing.footer.commercialLicense') }}
           </span>
           <div class="footer-bottom-links">
-            <RouterLink to="/overview">{{ t('landing.footer.docs') }}</RouterLink>
+            <RouterLink to="/docs/overview">{{ t('landing.footer.docs') }}</RouterLink>
             <a href="https://github.com/LavioDev/eam-mes-package" target="_blank" rel="noopener noreferrer">{{ t('landing.footer.github') }}</a>
           </div>
         </div>

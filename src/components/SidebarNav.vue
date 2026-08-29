@@ -38,7 +38,7 @@ const toggleSubmenu = (section: 'eam' | 'schema') => {
         
         <ul class="nav-submenu" :class="{ open: submenuOpen.eam }">
           <li class="submenu-item">
-            <RouterLink to="/overview" class="submenu-link" :class="{ active: route.path === '/overview' || route.path === '/architecture' }">
+            <RouterLink to="/docs/overview" class="submenu-link" :class="{ active: route.path.includes('overview') || route.path.includes('architecture') }">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="link-icon">
                 <rect x="3" y="3" width="7" height="7" rx="1"></rect>
                 <rect x="14" y="3" width="7" height="7" rx="1"></rect>
@@ -49,7 +49,7 @@ const toggleSubmenu = (section: 'eam' | 'schema') => {
             </RouterLink>
           </li>
           <li class="submenu-item">
-            <RouterLink to="/module-engine" class="submenu-link" :class="{ active: route.path === '/module-engine' }">
+            <RouterLink to="/docs/module-engine" class="submenu-link" :class="{ active: route.path.includes('module-engine') }">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="link-icon">
                 <polyline points="4 17 10 11 4 5"></polyline>
                 <line x1="12" y1="19" x2="20" y2="19"></line>
@@ -58,7 +58,7 @@ const toggleSubmenu = (section: 'eam' | 'schema') => {
             </RouterLink>
           </li>
           <li class="submenu-item">
-            <RouterLink to="/database" class="submenu-link" :class="{ active: route.path === '/database' || route.path === '/submodules' }">
+            <RouterLink to="/docs/database" class="submenu-link" :class="{ active: route.path.includes('database') || route.path.includes('submodules') }">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="link-icon">
                 <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
                 <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
@@ -68,7 +68,7 @@ const toggleSubmenu = (section: 'eam' | 'schema') => {
             </RouterLink>
           </li>
           <li class="submenu-item">
-            <RouterLink to="/deployment" class="submenu-link" :class="{ active: route.path === '/deployment' }">
+            <RouterLink to="/docs/deployment" class="submenu-link" :class="{ active: route.path.includes('deployment') }">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="link-icon">
                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                 <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
@@ -101,7 +101,7 @@ const toggleSubmenu = (section: 'eam' | 'schema') => {
         
         <ul class="nav-submenu" :class="{ open: submenuOpen.schema }">
           <li class="submenu-item">
-            <RouterLink to="/schema/class" class="submenu-link" :class="{ active: route.path === '/schema/class' }">
+            <RouterLink to="/docs/schema/class" class="submenu-link" :class="{ active: route.path.includes('schema/class') }">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="link-icon">
                 <polyline points="16 18 22 12 16 6"></polyline>
                 <polyline points="8 6 2 12 8 18"></polyline>
@@ -110,7 +110,7 @@ const toggleSubmenu = (section: 'eam' | 'schema') => {
             </RouterLink>
           </li>
           <li class="submenu-item">
-            <RouterLink to="/schema/api" class="submenu-link" :class="{ active: route.path === '/schema/api' }">
+            <RouterLink to="/docs/schema/api" class="submenu-link" :class="{ active: (route.path.endsWith('/schema/api') || route.path.endsWith('/schema/api/')) && !route.path.includes('api-generator') }">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="link-icon">
                 <circle cx="18" cy="5" r="3"></circle>
                 <circle cx="6" cy="12" r="3"></circle>
@@ -122,7 +122,7 @@ const toggleSubmenu = (section: 'eam' | 'schema') => {
             </RouterLink>
           </li>
           <li class="submenu-item">
-            <RouterLink to="/schema/generator" class="submenu-link" :class="{ active: route.path === '/schema/generator' }">
+            <RouterLink to="/docs/schema/generator" class="submenu-link" :class="{ active: route.path.includes('schema/generator') }">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="link-icon">
                 <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
               </svg>
@@ -130,7 +130,7 @@ const toggleSubmenu = (section: 'eam' | 'schema') => {
             </RouterLink>
           </li>
           <li class="submenu-item">
-            <RouterLink to="/schema/api-generator" class="submenu-link" :class="{ active: route.path === '/schema/api-generator' }">
+            <RouterLink to="/docs/schema/api-generator" class="submenu-link" :class="{ active: route.path.includes('schema/api-generator') }">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="link-icon">
                 <line x1="4" y1="21" x2="4" y2="14"></line>
                 <line x1="4" y1="10" x2="4" y2="3"></line>

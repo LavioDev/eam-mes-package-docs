@@ -11,58 +11,71 @@ const router = createRouter({
       meta: { hideSidebar: true }
     },
     {
-      path: '/overview',
+      path: '/docs',
+      redirect: '/docs/overview'
+    },
+    {
+      path: '/docs/overview',
+      alias: '/overview',
       name: 'overview',
       component: () => import('../views/EamOverviewView.vue')
     },
     {
-      path: '/module-engine',
+      path: '/docs/module-engine',
+      alias: '/module-engine',
       name: 'module-engine',
       component: () => import('../views/EamEngineView.vue')
     },
     {
-      path: '/database',
-      alias: '/submodules',
+      path: '/docs/database',
+      alias: ['/database', '/submodules'],
       name: 'database',
       component: () => import('../views/EamDatabaseView.vue')
     },
     {
-      path: '/architecture',
-      redirect: '/overview'
+      path: '/docs/architecture',
+      alias: '/architecture',
+      redirect: '/docs/overview'
     },
     {
-      path: '/deployment',
+      path: '/docs/deployment',
+      alias: '/deployment',
       name: 'deployment',
       component: () => import('../views/EamDeployView.vue')
     },
     {
-      path: '/apis',
+      path: '/docs/apis',
+      alias: '/apis',
       name: 'apis',
       component: () => import('../views/EamApisView.vue')
     },
     {
-      path: '/schema/class',
+      path: '/docs/schema/class',
+      alias: '/schema/class',
       name: 'schema-class',
       component: () => import('../views/SchemaClassView.vue')
     },
     {
-      path: '/schema/api',
+      path: '/docs/schema/api',
+      alias: '/schema/api',
       name: 'schema-api',
       component: () => import('../views/SchemaApiView.vue')
     },
     {
-      path: '/schema/generator',
+      path: '/docs/schema/generator',
+      alias: '/schema/generator',
       name: 'schema-generator',
       component: () => import('../views/SchemaGenView.vue')
     },
     {
-      path: '/schema/api-generator',
+      path: '/docs/schema/api-generator',
+      alias: '/schema/api-generator',
       name: 'schema-api-generator',
       component: () => import('../views/SchemaApiGenView.vue')
     },
     {
       path: '/:pathMatch(.*)*',
-      redirect: '/overview'
+      redirect: '/'
     }
   ]
 })

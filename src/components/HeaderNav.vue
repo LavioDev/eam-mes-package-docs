@@ -22,7 +22,7 @@ const isDocsActive = computed(() => !route.meta.hideSidebar)
     <div class="header-actions">
       <!-- Docs Navigation Link -->
       <RouterLink 
-        to="/overview" 
+        to="/docs/overview" 
         class="header-nav-btn docs-btn"
         :class="{ active: isDocsActive }"
         :title="isEn ? 'Documentation' : 'Tài liệu kỹ thuật'"
