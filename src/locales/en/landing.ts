@@ -1,0 +1,62 @@
+export default {
+  hero: {
+    title: 'Laravel Packages',
+    titleHighlight: 'for Equipment Asset Management',
+    btnDocs: 'Browse Docs',
+    btnRepo: 'Package Repository',
+    copy: 'Copy',
+    copied: 'Copied!'
+  },
+  featured: {
+    badge: 'Featured Package',
+    version: 'v1.0.0 • Laravel 11 / 12 / 13',
+    title: 'EAM MES Package',
+    summary: 'A production-ready Laravel package for Equipment Asset Management and Manufacturing Execution Systems. Ships with a modular architecture, dynamic schema extension layer (PHP Class & API Queue Jobs), built-in shift checklist engine, sensor telemetry logging, and a full REST API surface.',
+    f1Title: 'Artisan CLI Scaffold',
+    f1Desc: 'Scaffold full modular structures and submodules with a single Artisan command.',
+    f2Title: 'Dynamic Schema Extension',
+    f2Desc: 'Non-destructive schema extension system via PHP Class and 2-phase async API Queue.',
+    f3Title: 'Shift Checklist Engine',
+    f3Desc: 'Shift-based inspection checklist scheduling with historic preservation & safety limit.',
+    f4Title: 'Sensor Telemetry & Trends',
+    f4Desc: 'Real-time sensor timeseries logging and 7-day parameter trend matrix analytics.',
+    btnGithub: 'View on GitHub',
+    btnDocs: 'Read docs'
+  },
+  contact: {
+    badge: 'Work together',
+    title: 'Have a project in mind?',
+    sub: 'Open for outsource engagements and commercial licensing by',
+    subRest: 'Whether you need a custom Laravel package built from scratch or want to license the EAM MES Package for your organisation — let\'s talk.',
+    s1Title: 'Outsource Development',
+    s1Desc: 'Custom Laravel packages, REST APIs, EAM/MES systems, or any backend engineering work built to your spec.',
+    s2Title: 'Commercial Licensing',
+    s2Desc: 'License the EAM MES Package for your company\'s production environment with full source access and priority support.',
+    emailLabel: 'Reach out directly',
+    btnSendEmail: 'Send email',
+    btnCopyEmail: 'Copy email',
+    btnCopiedEmail: 'Copied!'
+  },
+  footer: {
+    brandDesc: 'A Laravel package for industrial asset management & manufacturing execution systems.',
+    colPackage: 'Package',
+    colSchema: 'Schema',
+    colContact: 'Contact',
+    linkOverview: 'Overview',
+    linkDatabase: 'Database Schema',
+    linkEngine: 'Module Engine',
+    linkApis: 'REST APIs',
+    linkDeploy: 'Deployment',
+    linkSchemaClass: 'Class Extension',
+    linkSchemaApi: 'API Extension',
+    linkSchemaGen: 'Generator',
+    linkSchemaApiGen: 'API Generator',
+    linkLavioProfile: 'LavioDev Profile',
+    linkPackageRepo: 'Package Repository',
+    linkOutsource: 'Outsource inquiry',
+    builtBy: 'Built by',
+    commercialLicense: 'Open for commercial licensing.',
+    docs: 'Documentation',
+    github: 'GitHub'
+  }
+}

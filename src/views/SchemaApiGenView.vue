@@ -1,13 +1,46 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { PlusOutlined, DeleteOutlined, CopyOutlined, SettingOutlined, CheckOutlined } from '@ant-design/icons-vue'
+import { useLocale } from '../composables/useLocale'
 
 const emit = defineEmits<{
-  (e: 'copy', text: string): void
+  (e: 'copy-text', text: string): void
 }>()
 
+const { t, isEn } = useLocale()
+
+const isModalOpen = ref(false)
+
+const openModal = () => {
+  isModalOpen.value = true
+}
+
+const closeModal = () => {
+  isModalOpen.value = false
+}
+
 const apiTableName = ref('eamo_maintenance_plans')
-const apiUrl = ref('http://your-app.test/eam/api/extensions')
+const apiUrl = ref('http://your-domain.com/eam/api/extensions')
 const currentApiTab = ref<'json' | 'curl'>('json')
+
+const tableOptions = [
+  { value: 'eamo_maintenance_plans', label: 'eamo_maintenance_plans' },
+  { value: 'eamo_maintenance_schedules', label: 'eamo_maintenance_schedules' },
+  { value: 'eamo_checklist_sessions', label: 'eamo_checklist_sessions' },
+  { value: 'eamo_equipment_error_logs', label: 'eamo_equipment_error_logs' },
+  { value: 'eamo_equipment_parameter_logs', label: 'eamo_equipment_parameter_logs' },
+  { value: 'eamo_equipment', label: 'eamo_equipment' }
+]
+
+const typeOptions = [
+  { value: 'string', label: 'string' },
+  { value: 'integer', label: 'integer' },
+  { value: 'boolean', label: 'boolean' },
+  { value: 'text', label: 'text' },
+  { value: 'decimal', label: 'decimal' },
+  { value: 'json', label: 'json' },
+  { value: 'timestamp', label: 'timestamp' }
+]
 
 interface Column {
   name: string;
@@ -18,7 +51,8 @@ interface Column {
 }
 
 const apiColData = ref<Column[]>([
-  { name: 'department_id', type: 'string', length: '36', nullable: true, after: 'user_id' }
+  { name: 'department_id', type: 'string', length: '36', nullable: true, after: 'user_id' },
+  { name: 'notes', type: 'text', length: '', nullable: true, after: 'department_id' }
 ])
 
 const switchApiTab = (tab: 'json' | 'curl') => {
@@ -26,23 +60,26 @@ const switchApiTab = (tab: 'json' | 'curl') => {
 }
 
 const addNewColumnToApiGenerator = () => {
+  const lastCol = apiColData.value[apiColData.value.length - 1]
   apiColData.value.push({
-    name: 'new_column_' + (apiColData.value.length + 1),
+    name: 'custom_field_' + (apiColData.value.length + 1),
     type: 'string',
     length: '',
     nullable: true,
-    after: ''
+    after: lastCol ? lastCol.name : ''
   })
 }
 
 const removeColumnFromApiGenerator = (index: number) => {
-  apiColData.value.splice(index, 1)
+  if (apiColData.value.length > 1) {
+    apiColData.value.splice(index, 1)
+  }
 }
 
 const generatedApiCodeRaw = computed(() => {
   const columnsArr = apiColData.value.map(col => {
     const item: any = {
-      name: col.name,
+      name: col.name || 'custom_field',
       type: col.type
     }
     if (col.length) item.length = parseInt(col.length) || col.length
@@ -63,6 +100,7 @@ const generatedApiCodeRaw = computed(() => {
   } else {
     return `curl -X POST "${apiUrl.value}" \\
   -H "Content-Type: application/json" \\
+  -H "Accept: application/json" \\
   -d '${jsonString.replace(/'/g, "'\\''")}'`
   }
 })
@@ -70,7 +108,7 @@ const generatedApiCodeRaw = computed(() => {
 const generatedApiCode = computed(() => {
   const columnsArr = apiColData.value.map(col => {
     const item: any = {
-      name: col.name,
+      name: col.name || 'custom_field',
       type: col.type
     }
     if (col.length) item.length = parseInt(col.length) || col.length
@@ -100,6 +138,7 @@ const generatedApiCode = computed(() => {
   } else {
     const curlCmd = `curl -X POST "${apiUrl.value}" \\
   -H "Content-Type: application/json" \\
+  -H "Accept: application/json" \\
   -d '${jsonString.replace(/'/g, "'\\''")}'`
 
     let highlightedCurl = curlCmd
@@ -109,7 +148,7 @@ const generatedApiCode = computed(() => {
 
     highlightedCurl = highlightedCurl.replace(/\b(curl)\b/g, '<span class="kw">$1</span>')
     highlightedCurl = highlightedCurl.replace(/(-X POST|-H|-d)/g, '<span class="cls">$1</span>')
-    highlightedCurl = highlightedCurl.replace(/("Content-Type: application\/json")/g, '<span class="str">$1</span>')
+    highlightedCurl = highlightedCurl.replace(/("Content-Type: application\/json"|"Accept: application\/json")/g, '<span class="str">$1</span>')
     highlightedCurl = highlightedCurl.replace(/('[^']*')/g, '<span class="str">$1</span>')
 
     return highlightedCurl
@@ -117,94 +156,363 @@ const generatedApiCode = computed(() => {
 })
 
 const triggerCopy = () => {
-  emit('copy', generatedApiCodeRaw.value)
+  emit('copy-text', generatedApiCodeRaw.value)
 }
 </script>
 
 <template>
   <section id="view-schema-api-gen" class="view-panel active">
-      <h1>Trình sinh trường qua API (API Request Generator)</h1>
-      <p>Cấu hình bảng mục tiêu và các cột mở rộng để tự động sinh Payload JSON hoặc lệnh CURL thực hiện yêu cầu qua API Endpoint:</p>
-
-      <div class="gen-layout">
-          <!-- Left Config Form -->
-          <div class="gen-sidebar">
-              <div class="gen-form-group">
-                  <label for="input-api-table">Bảng cơ sở dữ liệu đích:</label>
-                  <select id="input-api-table" class="gen-form-control" v-model="apiTableName">
-                      <option value="eamo_maintenance_plans">eamo_maintenance_plans</option>
-                      <option value="eamo_maintenance_schedules">eamo_maintenance_schedules</option>
-                      <option value="eamo_checklist_sessions">eamo_checklist_sessions</option>
-                      <option value="eamo_equipment_error_logs">eamo_equipment_error_logs</option>
-                      <option value="eamo_equipment_parameter_logs">eamo_equipment_parameter_logs</option>
-                  </select>
-              </div>
-
-              <div class="gen-form-group">
-                  <label for="input-api-url">API Endpoint URL:</label>
-                  <input type="text" id="input-api-url" class="gen-form-control" v-model="apiUrl">
-              </div>
-
-              <hr style="border: 0; border-top: 1px solid var(--border-muted); margin: 12px 0;">
-              
-              <div style="margin-bottom: 12px; display:flex; justify-content:space-between; align-items:center;">
-                  <span style="font-size: 11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Danh sách cột</span>
-                  <button class="btn-secondary" style="padding: 4px 8px; margin-bottom: 0;" @click="addNewColumnToApiGenerator">+ Thêm cột</button>
-              </div>
-
-              <div id="gen-api-columns-list">
-                  <div v-for="(col, idx) in apiColData" :key="idx" class="gen-column-item">
-                      <div class="gen-column-header">
-                          <span>CỘT ĐỊNH NGHĨA #{{ idx + 1 }}</span>
-                          <button class="btn-remove" @click="removeColumnFromApiGenerator(idx)">XÓA</button>
-                      </div>
-                      <div class="gen-row-grid">
-                          <div class="gen-form-group" style="margin-bottom:0; gap:2px;">
-                              <label style="font-size:10px;">Tên trường:</label>
-                              <input type="text" class="gen-form-control" style="padding:4px 6px; font-size:12px;" v-model="col.name">
-                          </div>
-                          <div class="gen-form-group" style="margin-bottom:0; gap:2px;">
-                              <label style="font-size:10px;">Kiểu dữ liệu:</label>
-                              <select class="gen-form-control" style="padding:4px 6px; font-size:12px;" v-model="col.type">
-                                  <option value="string">string</option>
-                                  <option value="integer">integer</option>
-                                  <option value="boolean">boolean</option>
-                                  <option value="text">text</option>
-                                  <option value="decimal">decimal</option>
-                                  <option value="json">json</option>
-                              </select>
-                          </div>
-                      </div>
-                      <div class="gen-row-grid" style="margin-top:6px; margin-bottom:0;">
-                          <div class="gen-form-group" style="margin-bottom:0; gap:2px;">
-                              <label style="font-size:10px;">Độ dài (nếu có):</label>
-                              <input type="text" class="gen-form-control" style="padding:4px 6px; font-size:12px;" v-model="col.length" placeholder="e.g. 36">
-                          </div>
-                          <div class="gen-form-group" style="margin-bottom:0; gap:2px;">
-                              <label style="font-size:10px;">Đặt sau cột:</label>
-                              <input type="text" class="gen-form-control" style="padding:4px 6px; font-size:12px;" v-model="col.after" placeholder="e.g. user_id">
-                          </div>
-                      </div>
-                      <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
-                          <label style="font-size:11px; display:flex; align-items:center; gap:4px; cursor:pointer;">
-                              <input type="checkbox" v-model="col.nullable"> Nullable
-                          </label>
-                      </div>
-                  </div>
-              </div>
-          </div>
-
-          <!-- Right IDE Preview -->
-          <div class="code-container" style="margin: 0; display:flex; flex-direction:column;">
-              <div class="code-header">
-                  <div style="display:flex; gap:16px;">
-                      <span id="ide-api-tab-json" :class="{ 'active-tab': currentApiTab === 'json' }" style="cursor:pointer; color:#ffffff;" @click="switchApiTab('json')">payload.json</span>
-                      <span id="ide-api-tab-curl" :class="{ 'active-tab': currentApiTab === 'curl' }" style="cursor:pointer; color:#a1a1aa;" @click="switchApiTab('curl')">curl_request.sh</span>
-                  </div>
-                  <button class="btn-copy" @click="triggerCopy">Copy to Clipboard</button>
-              </div>
-              <pre class="code-content" id="output-api-generator-code" style="flex-grow:1; min-height:400px; min-width: 0; box-sizing: border-box;" v-html="generatedApiCode"></pre>
-          </div>
+    <div class="gen-header-row">
+      <div>
+        <h1>{{ t('schema.apiGenerator.title') }}</h1>
+        <p class="subtitle-desc">{{ t('schema.apiGenerator.subtitle') }}</p>
       </div>
+
+      <!-- Button open Modal -->
+      <div class="header-action-group">
+        <a-button type="primary" @click="openModal" class="btn-config-trigger">
+          <template #icon><SettingOutlined /></template>
+          {{ isEn ? `Configure API Payload (${apiColData.length} columns)` : `Cấu hình API Payload (${apiColData.length} cột)` }}
+        </a-button>
+      </div>
+    </div>
+
+    <!-- Full-Width IDE Preview -->
+    <div class="code-container full-width-editor">
+      <div class="code-header">
+        <div class="tab-group">
+          <button 
+            type="button" 
+            class="tab-btn" 
+            :class="{ active: currentApiTab === 'json' }" 
+            @click="switchApiTab('json')"
+          >
+            payload.json
+          </button>
+          <button 
+            type="button" 
+            class="tab-btn" 
+            :class="{ active: currentApiTab === 'curl' }" 
+            @click="switchApiTab('curl')"
+          >
+            curl_request.sh
+          </button>
+        </div>
+        <div class="code-header-actions">
+          <a-button size="small" type="default" @click="openModal" class="btn-edit-code">
+            <template #icon><SettingOutlined /></template>
+            {{ t('schema.apiGenerator.btnEditPayload') }}
+          </a-button>
+          <button type="button" class="btn-copy" @click="triggerCopy">
+            <CopyOutlined style="margin-right: 4px;" />
+            {{ t('schema.apiGenerator.btnCopyPayload') }}
+          </button>
+        </div>
+      </div>
+      <pre class="code-content" v-html="generatedApiCode"></pre>
+    </div>
+
+    <!-- Vben Minimalist White Modal (Width 1200px) -->
+    <a-modal
+      v-model:open="isModalOpen"
+      :title="t('schema.apiGenerator.modalTitle')"
+      width="1200px"
+      :mask-closable="true"
+      @ok="closeModal"
+      @cancel="closeModal"
+      class="vben-white-modal"
+    >
+      <template #footer>
+        <a-button @click="closeModal">{{ t('schema.apiGenerator.modalClose') }}</a-button>
+        <a-button type="primary" @click="closeModal">
+          <template #icon><CheckOutlined /></template>
+          {{ t('schema.apiGenerator.modalApply') }}
+        </a-button>
+      </template>
+
+      <div class="modal-form-wrapper">
+        <!-- Top General Config Row -->
+        <a-row :gutter="16" class="top-config-row">
+          <a-col :xs="24" :sm="10">
+            <div class="field-item">
+              <label class="field-label">{{ t('schema.apiGenerator.targetTable') }}</label>
+              <a-select 
+                v-model:value="apiTableName" 
+                :options="tableOptions" 
+                :placeholder="t('schema.generator.selectTargetTable')"
+                style="width: 100%"
+              />
+            </div>
+          </a-col>
+          <a-col :xs="24" :sm="14">
+            <div class="field-item">
+              <label class="field-label">{{ t('schema.apiGenerator.apiUrl') }}</label>
+              <a-input 
+                v-model:value="apiUrl" 
+                placeholder="http://your-domain.com/eam/api/extensions" 
+              />
+            </div>
+          </a-col>
+        </a-row>
+
+        <!-- Columns Section Header -->
+        <div class="table-section-header">
+          <div class="section-title-group">
+            <span class="section-title">{{ t('schema.apiGenerator.columnsTitle') }}</span>
+            <span class="column-count-tag">{{ isEn ? `${apiColData.length} columns` : `${apiColData.length} cột` }}</span>
+          </div>
+          <a-button type="primary" size="small" ghost @click="addNewColumnToApiGenerator">
+            <template #icon><PlusOutlined /></template>
+            {{ t('schema.apiGenerator.btnAddColumn') }}
+          </a-button>
+        </div>
+
+        <!-- Clean Minimalist Table Grid for Columns -->
+        <div class="columns-table-container">
+          <table class="white-minimal-table">
+            <thead>
+              <tr>
+                <th style="width: 44px; text-align: center;">{{ t('schema.apiGenerator.tableHeaders.index') }}</th>
+                <th style="width: 28%;">{{ t('schema.apiGenerator.tableHeaders.name') }}</th>
+                <th style="width: 18%;">{{ t('schema.apiGenerator.tableHeaders.type') }}</th>
+                <th style="width: 16%;">{{ t('schema.apiGenerator.tableHeaders.length') }}</th>
+                <th style="width: 18%;">{{ t('schema.apiGenerator.tableHeaders.after') }}</th>
+                <th style="width: 12%; text-align: center;">{{ t('schema.apiGenerator.tableHeaders.nullable') }}</th>
+                <th style="width: 50px; text-align: center;">{{ t('schema.apiGenerator.tableHeaders.delete') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(col, idx) in apiColData" :key="idx">
+                <td class="index-cell">{{ idx + 1 }}</td>
+                <td>
+                  <a-input 
+                    v-model:value="col.name" 
+                    placeholder="vd: department_id" 
+                  />
+                </td>
+                <td>
+                  <a-select 
+                    v-model:value="col.type" 
+                    :options="typeOptions" 
+                    style="width: 100%" 
+                  />
+                </td>
+                <td>
+                  <a-input 
+                    v-model:value="col.length" 
+                    placeholder="vd: 36" 
+                  />
+                </td>
+                <td>
+                  <a-input 
+                    v-model:value="col.after" 
+                    placeholder="vd: user_id" 
+                  />
+                </td>
+                <td style="text-align: center;">
+                  <a-checkbox v-model:checked="col.nullable" />
+                </td>
+                <td style="text-align: center;">
+                  <a-button 
+                    type="text" 
+                    danger 
+                    :disabled="apiColData.length === 1"
+                    @click="removeColumnFromApiGenerator(idx)"
+                    class="btn-row-delete"
+                  >
+                    <template #icon><DeleteOutlined /></template>
+                  </a-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </a-modal>
   </section>
 </template>
+
+<style scoped>
+.gen-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.header-action-group {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-config-trigger {
+  height: 40px;
+  font-weight: 600;
+  border-radius: var(--radius);
+}
+
+.full-width-editor {
+  margin-top: 10px;
+  box-shadow: var(--shadow-card);
+}
+
+.tab-group {
+  display: flex;
+  gap: 4px;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  font-family: var(--font-mono);
+}
+
+.tab-btn:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  background-color: var(--bg-muted);
+  color: var(--color-accent);
+}
+
+.code-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-edit-code {
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+}
+
+/* Modal Form Styles */
+.modal-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 8px 0;
+}
+
+.top-config-row {
+  background-color: var(--bg-card-alt);
+  border: 1px solid var(--border-color);
+  padding: 16px 16px 8px;
+  border-radius: var(--radius);
+}
+
+.field-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.table-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.section-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.column-count-tag {
+  font-size: 11px;
+  background-color: var(--bg-muted);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.columns-table-container {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+  max-height: 460px;
+  overflow-y: auto;
+}
+
+.white-minimal-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+  margin: 0;
+}
+
+.white-minimal-table thead {
+  background-color: var(--bg-card-alt);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.white-minimal-table th {
+  padding: 10px 12px;
+  font-weight: 650;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.white-minimal-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+.white-minimal-table tbody tr:hover {
+  background-color: var(--bg-hover);
+}
+
+.white-minimal-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.index-cell {
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.btn-row-delete {
+  padding: 4px 8px;
+}
+
+@media (max-width: 768px) {
+  .gen-header-row {
+    flex-direction: column;
+  }
+}
+</style>

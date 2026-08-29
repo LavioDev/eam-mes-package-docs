@@ -5,12 +5,30 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/architecture'
+      alias: '/introduce',
+      name: 'home',
+      component: () => import('../views/HomePageView.vue'),
+      meta: { hideSidebar: true }
+    },
+    {
+      path: '/overview',
+      name: 'overview',
+      component: () => import('../views/EamOverviewView.vue')
+    },
+    {
+      path: '/module-engine',
+      name: 'module-engine',
+      component: () => import('../views/EamEngineView.vue')
+    },
+    {
+      path: '/database',
+      alias: '/submodules',
+      name: 'database',
+      component: () => import('../views/EamDatabaseView.vue')
     },
     {
       path: '/architecture',
-      name: 'architecture',
-      component: () => import('../views/EamArchView.vue')
+      redirect: '/overview'
     },
     {
       path: '/deployment',
@@ -44,7 +62,7 @@ const router = createRouter({
     },
     {
       path: '/:pathMatch(.*)*',
-      redirect: '/architecture'
+      redirect: '/overview'
     }
   ]
 })

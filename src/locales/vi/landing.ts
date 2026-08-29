@@ -1,0 +1,62 @@
+export default {
+  hero: {
+    title: 'Gói giải pháp Laravel',
+    titleHighlight: 'Quản lý Bảo trì & Thiết bị',
+    btnDocs: 'Xem tài liệu',
+    btnRepo: 'Mã nguồn Package',
+    copy: 'Sao chép',
+    copied: 'Đã sao chép!'
+  },
+  featured: {
+    badge: 'Package nổi bật',
+    version: 'v1.0.0 • Laravel 11 / 12 / 13',
+    title: 'EAM MES Package',
+    summary: 'Package Laravel hoàn chỉnh cho hệ thống Quản lý Thiết bị & Tài sản (EAM) và Điều hành Sản xuất (MES). Cung cấp kiến trúc mô-đun độc lập, mở rộng schema động (PHP Class & API Queue), tự động hóa kiểm tra ca kíp, thu thập dữ liệu cảm biến và toàn bộ REST API chuẩn.',
+    f1Title: 'Trình sinh mã Artisan CLI',
+    f1Desc: 'Khởi tạo toàn bộ cấu trúc mô-đun và phân hệ chỉ với một câu lệnh Artisan.',
+    f2Title: 'Mở rộng Schema động',
+    f2Desc: 'Hệ thống mở rộng cấu trúc bảng không phá hủy dữ liệu qua PHP Class và API Queue 2 giai đoạn.',
+    f3Title: 'Động cơ Checklist Ca kíp',
+    f3Desc: 'Tự động sinh lịch kiểm tra theo ca với bảo toàn lịch sử và giới hạn an toàn 100 lịch trình.',
+    f4Title: 'Dữ liệu Cảm biến & Xu hướng',
+    f4Desc: 'Nhật ký chuỗi thời gian cảm biến thời gian thực và ma trận phân tích xu hướng 7 ngày.',
+    btnGithub: 'Xem trên GitHub',
+    btnDocs: 'Đọc tài liệu'
+  },
+  contact: {
+    badge: 'Hợp tác phát triển',
+    title: 'Bạn có dự án cần triển khai?',
+    sub: 'Sẵn sàng hợp tác outsource dự án và chuyển giao bản quyền thương mại cùng',
+    subRest: 'Dù bạn cần xây dựng package Laravel tùy biến hay mua bản quyền EAM MES Package cho doanh nghiệp — hãy liên hệ ngay.',
+    s1Title: 'Phát triển Outsource',
+    s1Desc: 'Xây dựng Laravel package theo yêu cầu, hệ thống EAM/MES, REST API và các giải pháp backend chuyên sâu.',
+    s2Title: 'Bản quyền Thương mại',
+    s2Desc: 'Cấp phép bản quyền EAM MES Package cho môi trường sản xuất của doanh nghiệp với toàn bộ mã nguồn và hỗ trợ ưu tiên.',
+    emailLabel: 'Liên hệ trực tiếp',
+    btnSendEmail: 'Gửi email',
+    btnCopyEmail: 'Sao chép email',
+    btnCopiedEmail: 'Đã sao chép!'
+  },
+  footer: {
+    brandDesc: 'Package Laravel chuyên dụng cho quản lý thiết bị công nghiệp & hệ thống điều hành sản xuất.',
+    colPackage: 'Gói phân hệ',
+    colSchema: 'Mở rộng Schema',
+    colContact: 'Liên hệ',
+    linkOverview: 'Tổng quan',
+    linkDatabase: 'Cơ sở Dữ liệu',
+    linkEngine: 'Module Engine',
+    linkApis: 'REST APIs',
+    linkDeploy: 'Triển khai',
+    linkSchemaClass: 'Mở rộng PHP Class',
+    linkSchemaApi: 'Mở rộng API Endpoint',
+    linkSchemaGen: 'Trình sinh Schema',
+    linkSchemaApiGen: 'Trình sinh API',
+    linkLavioProfile: 'Hồ sơ LavioDev',
+    linkPackageRepo: 'Mã nguồn Package',
+    linkOutsource: 'Liên hệ Outsource',
+    builtBy: 'Phát triển bởi',
+    commercialLicense: 'Sẵn sàng cấp phép thương mại.',
+    docs: 'Tài liệu',
+    github: 'GitHub'
+  }
+}
