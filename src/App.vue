@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
-import { useRoute, RouterView } from 'vue-router'
+import { useRouter, useRoute, RouterView } from 'vue-router'
 import { theme as antdTheme } from 'ant-design-vue'
 import { useTheme } from './composables/useTheme'
 import { useLocale } from './composables/useLocale'
@@ -17,11 +17,40 @@ declare global {
 
 const { isDark } = useTheme()
 const { antdLocale, t } = useLocale()
+const router = useRouter()
 const route = useRoute()
 
-// Check whether to show sidebar (hidden on pages with hideSidebar meta)
+// Strictly show sidebar only on /docs/... pages
 const showSidebar = computed(() => {
-  return !route.meta.hideSidebar
+  return route.path.startsWith('/docs') && !route.meta.hideSidebar
+})
+
+// Page Loading Progress Bar State
+const isLoading = ref(false)
+const progress = ref(0)
+let loadingTimer: any = null
+
+router.beforeEach((to, from, next) => {
+  if (to.path !== from.path) {
+    isLoading.value = true
+    progress.value = 25
+    clearInterval(loadingTimer)
+    loadingTimer = setInterval(() => {
+      if (progress.value < 85) {
+        progress.value += Math.random() * 15 + 5
+      }
+    }, 100)
+  }
+  next()
+})
+
+router.afterEach(() => {
+  clearInterval(loadingTimer)
+  progress.value = 100
+  setTimeout(() => {
+    isLoading.value = false
+    progress.value = 0
+  }, 250)
 })
 
 // Toast Notification State
@@ -91,6 +120,15 @@ watch(() => route.path, () => {
       }
     }"
   >
+    <!-- Top Route Loading Progress Bar -->
+    <div
+      v-if="isLoading"
+      class="route-loading-bar"
+      :style="{ width: progress + '%' }"
+    >
+      <div class="route-loading-glow" />
+    </div>
+
     <!-- Header Bar Component -->
     <HeaderNav />
 
@@ -103,11 +141,14 @@ watch(() => route.path, () => {
         <!-- Main Dynamic Content Views via Vue Router -->
         <main :class="{ 'landing-main': !showSidebar }">
             <RouterView v-slot="{ Component }">
+              <Transition name="page-fade" mode="out-in">
                 <component 
                   :is="Component" 
+                  :key="route.path"
                   :copy-snippet="copySnippet"
                   @copy-text="copyToClipboard" 
                 />
+              </Transition>
             </RouterView>
         </main>
     </div>
@@ -118,6 +159,45 @@ watch(() => route.path, () => {
 </template>
 
 <style>
+/* Top Loading Bar */
+.route-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #2563eb 0%, #38bdf8 60%, #60a5fa 100%);
+  z-index: 99999;
+  pointer-events: none;
+  transition: width 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.8), 0 0 4px rgba(37, 99, 235, 0.9);
+}
+
+.route-loading-glow {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 80px;
+  box-shadow: 0 0 10px #38bdf8, 0 0 4px #38bdf8;
+  opacity: 1;
+}
+
+/* Page Transition */
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.page-fade-enter-from {
+  opacity: 0;
+  transform: translateY(3px);
+}
+
+.page-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-3px);
+}
+
 .container {
   display: flex;
   margin-top: 64px;
