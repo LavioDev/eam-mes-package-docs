@@ -13,6 +13,10 @@ export default {
   github: 'GitHub',
   copy: 'Copy',
   copied: 'Copied!',
+  sidebarToggle: {
+    open: 'Open sidebar',
+    collapse: 'Collapse sidebar'
+  },
   nav: {
     coreBusiness: 'Core Business',
     moduleEam: 'Module EAM',

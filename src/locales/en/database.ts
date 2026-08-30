@@ -1,18 +1,30 @@
 export default {
-  title: 'Database Design & Core Business Logic',
+  title: 'Database Design & Schema Flow',
   subtitle: 'The system is divided into two independent data layers: Master Data and Operational Data:',
   subtabs: {
-    masterdata: 'Masterdata Equipment',
-    checklist: 'Checklist Management',
-    maintenance: 'Maintenance Management',
-    error: 'Error & Operating Time',
-    parameter: 'Parameter Log'
+    masterdata: '1. Masterdata Equipment',
+    checklist: '2. Checklist Management',
+    maintenance: '3. Maintenance Management',
+    error: '4. Error & Operating Time',
+    parameter: '5. Parameter Log'
   },
+  selectSubmodule: 'Select Database Submodule:',
   headers: {
     method: 'Method',
     endpoint: 'Endpoint',
     middleware: 'Middleware',
     purpose: 'Purpose / Description'
+  },
+  erd: {
+    title: 'Database ERD Schema Flow',
+    fullscreen: 'Fullscreen',
+    exitFullscreen: 'Exit Fullscreen',
+    fullscreenTitle: 'View Fullscreen',
+    exitFullscreenTitle: 'Exit Fullscreen (Esc key)',
+    pk: 'Primary Key (PK)',
+    fk: 'Foreign Key (FK)',
+    relationship: 'Table Relationships',
+    hint: 'Drag tables • Scroll to zoom • Hold & drag to pan'
   },
   masterdata: {
     title: '1. Masterdata Equipment (Equipment Master Data & Configuration)',

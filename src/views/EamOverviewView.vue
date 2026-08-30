@@ -177,7 +177,7 @@ backend/
           <p v-if="!isEn">Đảm bảo tính toàn vẹn dữ liệu. Khi xóa một thực thể cha, Service chuyên biệt sẽ thực hiện soft delete tất cả các bản ghi phụ thuộc liên quan.</p>
           <p v-else>Ensures data integrity. When deleting a parent entity, a dedicated Service soft-deletes all dependent records in cascade.</p>
         </div>
-        <div class="card-item" style="grid-column: span 2;">
+        <div class="card-item">
           <div class="card-title">{{ t('overview.principles.uniformResponseTitle') }}</div>
           <p v-if="!isEn">Toàn bộ API trả về response đồng nhất theo chuẩn: <code>{ "status": "success", "data": ... }</code> hoặc <code>{ "message": "...", "data": ... }</code>.</p>
           <p v-else>All APIs return uniform JSON structures: <code>{ "status": "success", "data": ... }</code> or <code>{ "message": "...", "data": ... }</code>.</p>

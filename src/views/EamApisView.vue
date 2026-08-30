@@ -117,31 +117,33 @@ const filteredApiEndpoints = computed(() => {
       </div>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th style="width: 100px;">{{ t('apis.headers.method') }}</th>
-          <th>{{ t('apis.headers.path') }}</th>
-          <th>{{ t('apis.headers.description') }}</th>
-          <th>{{ t('apis.headers.module') }}</th>
-          <th style="width: 150px;">{{ t('apis.headers.middleware') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(api, idx) in filteredApiEndpoints" :key="idx">
-          <td><span class="badge-method" :class="api.method.toLowerCase()">{{ api.method }}</span></td>
-          <td><code class="api-path">{{ api.path }}</code></td>
-          <td>{{ api.description }}</td>
-          <td>{{ api.module }}</td>
-          <td>{{ api.middleware }}</td>
-        </tr>
-        <tr v-if="filteredApiEndpoints.length === 0">
-          <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 20px;">
-            {{ t('apis.filters.noResults') }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 100px;">{{ t('apis.headers.method') }}</th>
+            <th>{{ t('apis.headers.path') }}</th>
+            <th>{{ t('apis.headers.description') }}</th>
+            <th>{{ t('apis.headers.module') }}</th>
+            <th style="width: 150px;">{{ t('apis.headers.middleware') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(api, idx) in filteredApiEndpoints" :key="idx">
+            <td><span class="badge-method" :class="api.method.toLowerCase()">{{ api.method }}</span></td>
+            <td><code class="api-path">{{ api.path }}</code></td>
+            <td>{{ api.description }}</td>
+            <td>{{ api.module }}</td>
+            <td>{{ api.middleware }}</td>
+          </tr>
+          <tr v-if="filteredApiEndpoints.length === 0">
+            <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 20px;">
+              {{ t('apis.filters.noResults') }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 </template>
 
@@ -181,5 +183,20 @@ const filteredApiEndpoints = computed(() => {
 
 .api-path {
   font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .api-filter-bar {
+    padding: 12px 14px;
+    gap: 12px;
+  }
+  .filter-col {
+    width: 100%;
+    min-width: 100%;
+  }
+  .search-col {
+    width: 100%;
+    min-width: 100%;
+  }
 }
 </style>

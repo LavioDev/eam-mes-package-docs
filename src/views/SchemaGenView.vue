@@ -24,12 +24,27 @@ const className = ref('MaintenancePlanExtension')
 const priorityVal = ref(10)
 
 const tableOptions = [
+  { value: 'eamo_equipment', label: 'eamo_equipment' },
+  { value: 'eamo_equipment_categories', label: 'eamo_equipment_categories' },
+  { value: 'eamo_equipment_states', label: 'eamo_equipment_states' },
+  { value: 'eamo_equipment_images', label: 'eamo_equipment_images' },
+  { value: 'eamo_units', label: 'eamo_units' },
+  { value: 'eamo_equipment_parameters', label: 'eamo_equipment_parameters' },
+  { value: 'eamo_equipment_errors', label: 'eamo_equipment_errors' },
+  { value: 'eamo_checklist_sessions', label: 'eamo_checklist_sessions' },
+  { value: 'eamo_checklist_details', label: 'eamo_checklist_details' },
+  { value: 'eamo_checklist_schedules', label: 'eamo_checklist_schedules' },
+  { value: 'eamo_checklist_logs', label: 'eamo_checklist_logs' },
+  { value: 'eamo_equipment_parameter_logs', label: 'eamo_equipment_parameter_logs' },
+  { value: 'eamo_equipment_error_logs', label: 'eamo_equipment_error_logs' },
+  { value: 'eamo_maintenance_categories', label: 'eamo_maintenance_categories' },
+  { value: 'eamo_maintenance_items', label: 'eamo_maintenance_items' },
   { value: 'eamo_maintenance_plans', label: 'eamo_maintenance_plans' },
   { value: 'eamo_maintenance_schedules', label: 'eamo_maintenance_schedules' },
-  { value: 'eamo_checklist_sessions', label: 'eamo_checklist_sessions' },
-  { value: 'eamo_equipment_error_logs', label: 'eamo_equipment_error_logs' },
-  { value: 'eamo_equipment_parameter_logs', label: 'eamo_equipment_parameter_logs' },
-  { value: 'eamo_equipment', label: 'eamo_equipment' }
+  { value: 'eamo_maintenance_schedule_user', label: 'eamo_maintenance_schedule_user' },
+  { value: 'eamo_maintenance_logs', label: 'eamo_maintenance_logs' },
+  { value: 'eamo_operating_times', label: 'eamo_operating_times' },
+  { value: 'eamo_extension_requests', label: 'eamo_extension_requests' }
 ]
 
 const typeOptions = [

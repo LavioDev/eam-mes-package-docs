@@ -4,6 +4,7 @@ import { useRouter, useRoute, RouterView } from 'vue-router'
 import { theme as antdTheme } from 'ant-design-vue'
 import { useTheme } from './composables/useTheme'
 import { useLocale } from './composables/useLocale'
+import { useSidebar } from './composables/useSidebar'
 
 import HeaderNav from './components/HeaderNav.vue'
 import SidebarNav from './components/SidebarNav.vue'
@@ -17,6 +18,7 @@ declare global {
 
 const { isDark } = useTheme()
 const { antdLocale, t } = useLocale()
+const { isSidebarOpen, isMobile, closeSidebar } = useSidebar()
 const router = useRouter()
 const route = useRoute()
 
@@ -33,13 +35,13 @@ let loadingTimer: any = null
 router.beforeEach((to, from, next) => {
   if (to.path !== from.path) {
     isLoading.value = true
-    progress.value = 25
+    progress.value = 35
     clearInterval(loadingTimer)
     loadingTimer = setInterval(() => {
-      if (progress.value < 85) {
-        progress.value += Math.random() * 15 + 5
+      if (progress.value < 88) {
+        progress.value += Math.random() * 18 + 8
       }
-    }, 100)
+    }, 60)
   }
   next()
 })
@@ -47,10 +49,13 @@ router.beforeEach((to, from, next) => {
 router.afterEach(() => {
   clearInterval(loadingTimer)
   progress.value = 100
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  document.documentElement.scrollTop = 0
+  document.body.scrollTop = 0
   setTimeout(() => {
     isLoading.value = false
     progress.value = 0
-  }, 250)
+  }, 150)
 })
 
 // Toast Notification State
@@ -88,7 +93,13 @@ const copyToClipboard = (text: unknown) => {
 
 // Watch route change to trigger Mermaid render dynamically
 watch(() => route.path, () => {
+  if (isMobile.value) {
+    closeSidebar()
+  }
   nextTick(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
     if (window.mermaid) {
       try {
         const elements = document.querySelectorAll('.mermaid[data-processed]')
@@ -105,7 +116,7 @@ watch(() => route.path, () => {
       }
     }
   })
-}, { immediate: true })
+})
 </script>
 
 <template>
@@ -133,22 +144,33 @@ watch(() => route.path, () => {
     <HeaderNav />
 
     <!-- Main App Container -->
-    <div class="container" :class="{ 'landing-container': !showSidebar }">
-        
+    <div 
+      class="container" 
+      :class="{ 
+        'landing-container': !showSidebar,
+        'sidebar-collapsed': !isSidebarOpen && !isMobile
+      }"
+    >
+        <!-- Mobile Sidebar Backdrop Overlay -->
+        <div
+          v-if="showSidebar && isSidebarOpen && isMobile"
+          class="sidebar-backdrop"
+          @click="closeSidebar"
+        />
+
         <!-- Sidebar Component (Only on Docs pages) -->
         <SidebarNav v-if="showSidebar" />
 
         <!-- Main Dynamic Content Views via Vue Router -->
         <main :class="{ 'landing-main': !showSidebar }">
             <RouterView v-slot="{ Component }">
-              <Transition name="page-fade" mode="out-in">
-                <component 
-                  :is="Component" 
-                  :key="route.path"
-                  :copy-snippet="copySnippet"
-                  @copy-text="copyToClipboard" 
-                />
-              </Transition>
+              <component 
+                :is="Component" 
+                :key="route.path"
+                class="page-reload-view"
+                :copy-snippet="copySnippet"
+                @copy-text="copyToClipboard" 
+              />
             </RouterView>
         </main>
     </div>
@@ -182,20 +204,18 @@ watch(() => route.path, () => {
   opacity: 1;
 }
 
-/* Page Transition */
-.page-fade-enter-active,
-.page-fade-leave-active {
-  transition: opacity 0.15s ease, transform 0.15s ease;
+/* Page Reload Transition (Instant swap at top, clean fade-in without stutter) */
+.page-reload-view {
+  animation: pageReloadFadeIn 0.14s ease-out;
 }
 
-.page-fade-enter-from {
-  opacity: 0;
-  transform: translateY(3px);
-}
-
-.page-fade-leave-to {
-  opacity: 0;
-  transform: translateY(-3px);
+@keyframes pageReloadFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .container {
@@ -203,11 +223,15 @@ watch(() => route.path, () => {
   margin-top: 64px;
   min-height: calc(100vh - 64px);
   width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 .landing-container {
   display: block;
   width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 .landing-main {
@@ -215,5 +239,28 @@ watch(() => route.path, () => {
   padding: 0 !important;
   max-width: 100% !important;
   width: 100%;
+}
+
+.container.sidebar-collapsed main {
+  margin-left: 0 !important;
+  max-width: 100% !important;
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 150;
+  animation: backdropFadeIn 0.2s ease;
+}
+
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 </style>

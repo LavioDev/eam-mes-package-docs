@@ -3,10 +3,12 @@ import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { useTheme } from '../composables/useTheme'
 import { useLocale } from '../composables/useLocale'
+import { useSidebar } from '../composables/useSidebar'
 
 const route = useRoute()
 const { isDark, toggleTheme } = useTheme()
 const { isEn, toggleLocale, t } = useLocale()
+const { isSidebarOpen, toggleSidebar } = useSidebar()
 
 const isDocsActive = computed(() => !route.meta.hideSidebar)
 </script>
@@ -14,7 +16,42 @@ const isDocsActive = computed(() => !route.meta.hideSidebar)
 <template>
   <header class="main-header">
     <div class="header-brand">
+      <!-- Sidebar Toggle Button (Only on docs screens) -->
+      <button
+        v-if="isDocsActive"
+        type="button"
+        class="sidebar-toggle-btn"
+        :class="{ active: isSidebarOpen }"
+        :title="isSidebarOpen ? t('common.sidebarToggle.collapse') : t('common.sidebarToggle.open')"
+        :aria-label="isSidebarOpen ? t('common.sidebarToggle.collapse') : t('common.sidebarToggle.open')"
+        @click="toggleSidebar"
+      >
+        <svg class="favicon-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="eamToggleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#3b82f6" />
+              <stop offset="100%" stop-color="#60a5fa" />
+            </linearGradient>
+          </defs>
+          <rect x="3.5" y="5.5" width="17" height="3" rx="1.5" fill="url(#eamToggleGrad)" />
+          <rect x="3.5" y="10.5" width="11" height="3" rx="1.5" fill="url(#eamToggleGrad)" />
+          <rect x="3.5" y="15.5" width="17" height="3" rx="1.5" fill="url(#eamToggleGrad)" />
+        </svg>
+      </button>
+
       <RouterLink to="/" class="brand-link">
+        <!-- Static Favicon Icon on non-docs screens (Landing page) -->
+        <svg v-if="!isDocsActive" class="favicon-icon brand-static-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="eamBrandGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#3b82f6" />
+              <stop offset="100%" stop-color="#60a5fa" />
+            </linearGradient>
+          </defs>
+          <rect x="3.5" y="5.5" width="17" height="3" rx="1.5" fill="url(#eamBrandGrad)" />
+          <rect x="3.5" y="10.5" width="11" height="3" rx="1.5" fill="url(#eamBrandGrad)" />
+          <rect x="3.5" y="15.5" width="17" height="3" rx="1.5" fill="url(#eamBrandGrad)" />
+        </svg>
         <span class="brand-name">EAM MES PACKAGE</span>
       </RouterLink>
     </div>
@@ -103,12 +140,46 @@ const isDocsActive = computed(() => !route.meta.hideSidebar)
   right: 0;
   z-index: 100;
   transition: background-color 0.2s, border-color 0.2s;
+  max-width: 100vw;
+  box-sizing: border-box;
 }
 
 .header-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+}
+
+.sidebar-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.sidebar-toggle-btn:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.sidebar-toggle-btn.active {
+  background-color: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.35);
+}
+
+.favicon-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
 }
 
 .brand-link {
@@ -124,10 +195,23 @@ const isDocsActive = computed(() => !route.meta.hideSidebar)
   color: var(--text-primary);
   letter-spacing: -0.02em;
   transition: color 0.15s ease;
+  white-space: nowrap;
 }
 
 .brand-link:hover .brand-name {
   color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+  .main-header {
+    padding: 0 12px;
+  }
+  .brand-name {
+    display: none;
+  }
+  .header-actions {
+    gap: 6px;
+  }
 }
 
 .header-actions {

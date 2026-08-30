@@ -13,6 +13,10 @@ export default {
   github: 'GitHub',
   copy: 'Copy',
   copied: 'Đã sao chép!',
+  sidebarToggle: {
+    open: 'Mở thanh điều hướng',
+    collapse: 'Thu gọn thanh điều hướng'
+  },
   nav: {
     coreBusiness: 'Nghiệp vụ cốt lõi',
     moduleEam: 'Module EAM',

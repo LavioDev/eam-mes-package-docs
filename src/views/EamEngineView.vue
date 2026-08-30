@@ -93,7 +93,7 @@ php artisan eam-mes:publish --submodule=tooling</pre>
       </div>
 
       <h3 style="margin-top: 24px;">{{ t('engine.sec3Title') }}</h3>
-      <div class="grid-cards">
+      <div class="stack-cards">
         <div class="card-item">
           <div class="card-title">{{ t('engine.cards.registerTitle') }}</div>
           <p v-if="!isEn">Tự động kế thừa <code>AbstractModuleProvider</code> và định nghĩa các endpoints RESTful API chuẩn có versioning và middleware auth.</p>
@@ -104,7 +104,7 @@ php artisan eam-mes:publish --submodule=tooling</pre>
           <p v-if="!isEn">Tự động cấu hình <code>HasUuids</code>, mảng <code>$fillable</code>, <code>casts()</code> và file migration có tiền tố chuẩn <code>eamo_</code>.</p>
           <p v-else>Automatically configures <code>HasUuids</code>, <code>$fillable</code> arrays, <code>casts()</code>, and migration files with the standard <code>eamo_</code> prefix.</p>
         </div>
-        <div class="card-item" style="grid-column: span 2;">
+        <div class="card-item">
           <div class="card-title">{{ t('engine.cards.actionsTitle') }}</div>
           <p v-if="!isEn">Sinh sẵn bộ 5 Single-Action Classes (<code>Index</code>, <code>Store</code>, <code>Show</code>, <code>Update</code>, <code>Delete</code>) áp dụng <code>Lorisleiva\Actions\Concerns\AsAction</code> kèm <code>Service</code> layer độc lập.</p>
           <p v-else>Pre-generates 5 Single-Action Classes (<code>Index</code>, <code>Store</code>, <code>Show</code>, <code>Update</code>, <code>Delete</code>) using <code>Lorisleiva\Actions\Concerns\AsAction</code> alongside an independent <code>Service</code> layer.</p>

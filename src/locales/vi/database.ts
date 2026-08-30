@@ -1,18 +1,30 @@
 export default {
-  title: 'Thiết kế Cơ sở Dữ liệu & Nghiệp vụ Lõi',
+  title: 'Thiết kế & Sơ đồ Cơ sở Dữ liệu',
   subtitle: 'Hệ thống chia làm hai lớp dữ liệu độc lập: Dữ liệu gốc (Master Data) và Dữ liệu vận hành (Operational Data):',
   subtabs: {
-    masterdata: 'Masterdata Equipment',
-    checklist: 'Checklist Management',
-    maintenance: 'Maintenance Management',
-    error: 'Error & Operating Time',
-    parameter: 'Parameter Log'
+    masterdata: '1. Masterdata Equipment (Dữ liệu gốc)',
+    checklist: '2. Checklist Management (Kiểm tra định kỳ)',
+    maintenance: '3. Maintenance Management (Kế hoạch bảo trì)',
+    error: '4. Error & Operating Time (Giám sát lỗi & Thời gian chạy)',
+    parameter: '5. Parameter Log (Nhật ký thông số cảm biến)'
   },
+  selectSubmodule: 'Chọn phân hệ cơ sở dữ liệu:',
   headers: {
     method: 'Method',
     endpoint: 'Endpoint',
     middleware: 'Middleware',
     purpose: 'Mục đích xử lý'
+  },
+  erd: {
+    title: 'Sơ đồ ERD Cơ sở Dữ liệu',
+    fullscreen: 'Toàn màn hình',
+    exitFullscreen: 'Thu nhỏ',
+    fullscreenTitle: 'Xem toàn màn hình',
+    exitFullscreenTitle: 'Thu nhỏ (Phím Esc)',
+    pk: 'Khóa chính (Primary Key)',
+    fk: 'Khóa ngoại (Foreign Key)',
+    relationship: 'Mối quan hệ liên kết',
+    hint: 'Kéo thả bảng • Cuộn chuột để Zoom • Giữ chuột để Pan'
   },
   masterdata: {
     title: '1. Masterdata Equipment (Dữ liệu gốc Thiết bị & Cấu hình)',

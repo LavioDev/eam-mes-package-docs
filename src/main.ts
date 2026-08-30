@@ -7,6 +7,11 @@ import App from './App.vue'
 import router from './router'
 import { i18n } from './locales'
 
+// Disable automatic browser scroll restoration on SPA route changes
+if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual'
+}
+
 const app = createApp(App)
 
 app.use(Antd)

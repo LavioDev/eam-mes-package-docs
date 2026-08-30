@@ -18,8 +18,11 @@ defineProps<NodeProps<TableData>>()
 
 <template>
   <div class="db-node-card">
+    <!-- Anchor Handles for Multi-directional Routing -->
     <Handle type="target" :position="Position.Left" class="node-handle target-handle" />
     <Handle type="source" :position="Position.Right" class="node-handle source-handle" />
+    <Handle type="target" :position="Position.Top" id="top-target" class="node-handle top-handle" />
+    <Handle type="source" :position="Position.Bottom" id="bottom-source" class="node-handle bottom-handle" />
 
     <!-- Table Header (Minimalist Vben Style) -->
     <div class="db-node-header">
@@ -60,7 +63,7 @@ defineProps<NodeProps<TableData>>()
   border: 1px solid var(--border-color);
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  min-width: 240px;
+  min-width: 270px;
   font-family: var(--font-sans, sans-serif);
   overflow: hidden;
   transition: all 0.15s ease;
