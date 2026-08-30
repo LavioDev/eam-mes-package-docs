@@ -187,7 +187,7 @@ const triggerCopy = () => {
     <div class="code-container full-width-editor">
       <div class="code-header">
         <div class="code-title">
-          <CodeOutlined style="margin-right: 6px; color: var(--color-accent);" />
+          <CodeOutlined class="code-title-icon" />
           <span>app/Extensions/{{ className || 'MyTableExtension' }}.php</span>
           <span class="table-badge-indicator">{{ tableName }}</span>
         </div>
@@ -366,19 +366,25 @@ const triggerCopy = () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13.5px;
+  font-size: 12.5px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #f1f5f9;
+}
+
+.code-title-icon {
+  color: #60a5fa;
+  font-size: 13px;
 }
 
 .table-badge-indicator {
   font-size: 11px;
-  background-color: var(--bg-card-alt);
-  color: var(--color-accent);
-  border: 1px solid var(--border-color);
+  background-color: rgba(37, 99, 235, 0.15);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.3);
   padding: 2px 8px;
   border-radius: 4px;
   font-family: var(--font-mono);
+  font-weight: 500;
 }
 
 .code-header-actions {
@@ -389,7 +395,24 @@ const triggerCopy = () => {
 
 .btn-edit-code {
   font-weight: 500;
-  border-radius: var(--radius-sm);
+  font-size: 11.5px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #e2e8f0 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: var(--transition);
+}
+
+.btn-edit-code:hover,
+.btn-edit-code:focus {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: #cbd5e1 !important;
+  color: #ffffff !important;
 }
 
 /* Modal Form Styles */

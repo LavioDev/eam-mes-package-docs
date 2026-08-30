@@ -374,30 +374,32 @@ const triggerCopy = () => {
 
 .tab-group {
   display: flex;
-  gap: 4px;
+  gap: 6px;
+  align-items: center;
 }
 
 .tab-btn {
-  background: none;
-  border: none;
-  padding: 6px 12px;
-  font-size: 13px;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 4px 10px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: #94a3b8;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 4px;
   transition: all 0.15s ease;
   font-family: var(--font-mono);
 }
 
 .tab-btn:hover {
-  background-color: var(--bg-hover);
-  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #f1f5f9;
 }
 
 .tab-btn.active {
-  background-color: var(--bg-muted);
-  color: var(--color-accent);
+  background-color: rgba(37, 99, 235, 0.15);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.3);
 }
 
 .code-header-actions {
@@ -408,7 +410,24 @@ const triggerCopy = () => {
 
 .btn-edit-code {
   font-weight: 500;
-  border-radius: var(--radius-sm);
+  font-size: 11.5px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #e2e8f0 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: var(--transition);
+}
+
+.btn-edit-code:hover,
+.btn-edit-code:focus {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: #cbd5e1 !important;
+  color: #ffffff !important;
 }
 
 /* Modal Form Styles */
